@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=SDL2 ES2 Test
+Icon=icon-launcher-component-gallery
+Exec=invoker -s --type=q /usr/bin/sdl2_opengles2_test

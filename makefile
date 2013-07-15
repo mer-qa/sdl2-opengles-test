@@ -1,22 +1,26 @@
 
 TARGETS := sdl2_opengles1_test sdl2_opengles2_test
+DESKTOPS := $(patsubst %,%.desktop,$(TARGETS))
 
-CFLAGS += -I../SDL/include -I../SDL/build/include
-LDLIBS += -lSDL2 -L../SDL/build/build/.libs
+DESTDIR ?=
+PREFIX ?= /usr
 
-all: prepare $(TARGETS)
+all: $(TARGETS)
 
 sdl2_opengles1_test: main_glesv1.cpp common.cpp
-	$(CXX) -o $@ $(CFLAGS) $^ $(LDLIBS) -lGLESv1_CM
+	$(CXX) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm)
 
 sdl2_opengles2_test: main_glesv2.cpp common.cpp
-	$(CXX) -o $@ $(CFLAGS) $^ $(LDLIBS) -lGLESv2
+	$(CXX) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv2)
 
-prepare:
-	$(MAKE) -C ../SDL/build
+install: $(TARGETS) $(DESKTOPS)
+	install -d $(DESTDIR)$(PREFIX)/bin/
+	install -d $(DESTDIR)$(PREFIX)/share/applications/
+	install -m755 $(TARGETS) $(DESTDIR)$(PREFIX)/bin/
+	install -m644 $(DESKTOPS) $(DESTDIR)$(PREFIX)/share/applications/
 
 clean:
 	rm -f $(TARGETS)
 
-.PHONY: all prepare clean
+.PHONY: all install clean
 
