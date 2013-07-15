@@ -3,15 +3,3 @@ SDL2 OpenGL ES Test Applications
 
 These two applications test touch input and OpenGL ES context creation
 of SDL 2.0 when using in combination with the Wayland video driver.
-
-Prerequisites:
-
- - SDL 2.0 with Wayland support built in ../SDL/build/ with source in ../SDL/
-   (or modify makefile to point to different source/build directory)
-
-How to build:
-
-    make
-
-For convenience during development, this does run "make" for SDL2 as well
-to make sure that the libSDL2 we are building against is up to date.
