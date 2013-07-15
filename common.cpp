@@ -142,6 +142,11 @@ SDL2TestApplication::run()
             }
         }
 
+        if (quit) {
+            /* Application has to quit - don't render anymore */
+            break;
+        }
+
         renderGL();
 
         SDL_GL_SwapWindow(m_window);
