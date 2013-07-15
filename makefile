@@ -5,13 +5,15 @@ DESKTOPS := $(patsubst %,%.desktop,$(TARGETS))
 DESTDIR ?=
 PREFIX ?= /usr
 
+CXXFLAGS ?= -g
+
 all: $(TARGETS)
 
 sdl2_opengles1_test: main_glesv1.cpp common.cpp
-	$(CXX) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm)
 
 sdl2_opengles2_test: main_glesv2.cpp common.cpp
-	$(CXX) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv2)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv2)
 
 install: $(TARGETS) $(DESKTOPS)
 	install -d $(DESTDIR)$(PREFIX)/bin/
