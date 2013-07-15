@@ -1,22 +1,22 @@
 
-TARGET := sdl_opengles2_test
-OBJECTS := main.o
+TARGETS := sdl_opengles1_test sdl_opengles2_test
 
 CFLAGS += -I../SDL/include -I../SDL/build/include
-LDLIBS += -lSDL2 -lGLESv2 -L../SDL/build/build/.libs
+LDLIBS += -lSDL2 -L../SDL/build/build/.libs
 
-all: prepare $(TARGET)
+all: prepare $(TARGETS)
+
+sdl_opengles1_test: main_glesv1.cpp common.cpp
+	$(CXX) -o $@ $(CFLAGS) $^ $(LDLIBS) -lGLESv1_CM
+
+sdl_opengles2_test: main_glesv2.cpp common.cpp
+	$(CXX) -o $@ $(CFLAGS) $^ $(LDLIBS) -lGLESv2
 
 prepare:
 	$(MAKE) -C ../SDL/build
 
-$(TARGET): $(OBJECTS)
-	$(CC) -o $@ $< $(LDLIBS)
-
-run: test
-	LD_LIBRARY_PATH=../build/.libs ./$(TARGET)
-
 clean:
-	rm -f $(TARGET) $(OBJECTS)
+	rm -f $(TARGETS)
 
-.PHONY: all prepare run clean
+.PHONY: all prepare clean
+
