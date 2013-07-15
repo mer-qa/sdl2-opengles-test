@@ -7,6 +7,7 @@ SDL2TestApplication::SDL2TestApplication(int major, int minor)
     : m_major(major)
     , m_minor(minor)
     , m_window(NULL)
+    , m_touches()
 {
     setenv("SDL_VIDEODRIVER", "wayland", 1);
     setenv("WAYLAND_DISPLAY", "wayland-0", 1);
@@ -15,6 +16,19 @@ SDL2TestApplication::SDL2TestApplication(int major, int minor)
 
 SDL2TestApplication::~SDL2TestApplication()
 {
+    std::list<TouchPoint*>::iterator it;
+    for (it=m_touches.begin(); it != m_touches.end(); ++it) {
+        delete *it;
+    }
+}
+
+void
+SDL2TestApplication::for_each_touch(touch_point_func f, void *user_data)
+{
+    std::list<TouchPoint*>::iterator it;
+    for (it=m_touches.begin(); it != m_touches.end(); ++it) {
+        f(*it, user_data);
+    }
 }
 
 int
@@ -57,6 +71,9 @@ SDL2TestApplication::run()
     initGL();
     resizeGL(w, h);
 
+    std::list<TouchPoint*>::iterator it;
+    TouchPoint *touch;
+
     SDL_Event event;
     int quit = 0;
     while (!quit) {
@@ -70,13 +87,27 @@ SDL2TestApplication::run()
                             event.window.data1, event.window.data2);
                     break;
                 case SDL_FINGERDOWN:
+                    touch = new TouchPoint(event.tfinger.fingerId,
+                            event.tfinger.x, event.tfinger.y);
+                    m_touches.push_back(touch);
+                    printf("Finger down: (%.2f, %.2f)\n", touch->x, touch->y);
+                    break;
                 case SDL_FINGERUP:
                 case SDL_FINGERMOTION:
-                    printf("Finger %s: %d (%.2f / %.2f)\n",
-                            (event.type == SDL_FINGERDOWN) ? "down" :
-                             ((event.type == SDL_FINGERUP) ? "up" : "moved"),
-                            event.tfinger.fingerId,
-                            event.tfinger.x, event.tfinger.y);
+                    for (it=m_touches.begin(); it != m_touches.end(); ++it) {
+                        touch = *it;
+                        if (touch->id == event.tfinger.fingerId) {
+                            if (event.type == SDL_FINGERMOTION) {
+                                touch->x = event.tfinger.x;
+                                touch->y = event.tfinger.y;
+                                printf("finger move: (%.2f, %.2f)\n", touch->x, touch->y);
+                            } else {
+                                printf("Finger up: (%.2f, %.2f)\n", touch->x, touch->y);
+                                m_touches.erase(it);
+                            }
+                            break;
+                        }
+                    }
                     break;
                 default:
                     printf("SDL Event: %d\n", event.type);
