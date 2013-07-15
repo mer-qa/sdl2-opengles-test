@@ -44,6 +44,10 @@ main(int argc, char *argv[])
     printf("Window size after fullscreen on: (%d, %d)\n", w, h);
 #endif
 
+    // Request an OpenGL ES 2.0 context for rendering
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+
     SDL_GLContext glcontext = SDL_GL_CreateContext(window);
     SDL_Event event;
 
@@ -66,7 +70,9 @@ main(int argc, char *argv[])
         }
 
         glClearColor(1.0, 0.0, 0.0, 1.0);
+
         glClear(GL_COLOR_BUFFER_BIT);
+
         SDL_GL_SwapWindow(window);
         SDL_Delay(10);
     }
