@@ -2,4 +2,4 @@
 Type=Application
 Name=SDL2 ES1 Test
 Icon=icon-launcher-component-gallery
-Exec=invoker -s --type=q /usr/bin/sdl2_opengles1_test
+Exec=/usr/bin/sdl2_opengles1_test
