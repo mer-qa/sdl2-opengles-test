@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
-Name=SDL2 Mixer Test
+Name=SDL2 Mixer
 Icon=icon-launcher-component-gallery
 Exec=/usr/bin/sdl2_mixer_test
