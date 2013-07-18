@@ -38,7 +38,7 @@ SDL2TestApplication::SDL2TestApplication(int major, int minor)
 {
     setenv("SDL_VIDEODRIVER", "wayland", 1);
     setenv("WAYLAND_DISPLAY", "wayland-0", 1);
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 }
 
 SDL2TestApplication::~SDL2TestApplication()
@@ -117,6 +117,7 @@ SDL2TestApplication::run()
                     touch = new TouchPoint(event.tfinger.fingerId,
                             event.tfinger.x, event.tfinger.y);
                     m_touches.push_back(touch);
+                    onPressed(touch);
                     printf("Finger down: (%.2f, %.2f)\n", touch->x, touch->y);
                     break;
                 case SDL_FINGERUP:

@@ -56,6 +56,8 @@ class SDL2TestApplication {
         virtual void resizeGL(int width, int height) = 0;
         virtual void renderGL() = 0;
 
+        virtual void onPressed(TouchPoint *touch) {}
+
         void for_each_touch(touch_point_func f, void *user_data);
 
     private:
