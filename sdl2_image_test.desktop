@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=SDL2 Image Test
+Icon=icon-launcher-component-gallery
+Exec=/usr/bin/sdl2_image_test

@@ -1,5 +1,5 @@
 Name:		sdl2-opengles-test
-Version:	1.0.0
+Version:	1.0.3
 Release:	1
 Summary:	OpenGL ES 1.1 and 2.0 test applications (using SDL2)
 
@@ -11,6 +11,7 @@ BuildRequires:	pkgconfig(sdl2)
 BuildRequires:	pkgconfig(egl)
 BuildRequires:  pkgconfig(glesv1_cm)
 BuildRequires:  pkgconfig(glesv2)
+BuildRequires:  pkgconfig(SDL2_image)
 
 %description
 This application is used to test OpenGL ES 1.1 and 2.0 rendering
@@ -29,3 +30,4 @@ make
 %defattr(-,root,root,-)
 /usr/bin/*
 /usr/share/applications/*.desktop
+/usr/share/%(name)/*
