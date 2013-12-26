@@ -36,8 +36,6 @@ SDL2TestApplication::SDL2TestApplication(int major, int minor)
     , m_window(NULL)
     , m_touches()
 {
-    setenv("SDL_VIDEODRIVER", "wayland", 1);
-    setenv("WAYLAND_DISPLAY", "wayland-0", 1);
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 }
 
