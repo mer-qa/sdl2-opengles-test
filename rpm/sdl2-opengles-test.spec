@@ -1,5 +1,5 @@
 Name:		sdl2-opengles-test
-Version:	1.0.5
+Version:	1.0.6
 Release:	1
 Summary:	OpenGL ES 1.1 and 2.0 test applications (using SDL2)
 
