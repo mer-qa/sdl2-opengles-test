@@ -14,6 +14,8 @@ BuildRequires:  pkgconfig(glesv2)
 BuildRequires:  pkgconfig(SDL2_image)
 BuildRequires:  pkgconfig(SDL2_ttf)
 BuildRequires:  pkgconfig(SDL2_mixer)
+BuildRequires:  pkgconfig(audioresource)
+BuildRequires:  pkgconfig(glib-2.0)
 
 %description
 This application is used to test OpenGL ES 1.1 and 2.0 rendering
