@@ -32,6 +32,9 @@
 
 #include <SDL_mixer.h>
 
+#include <audioresource.h>
+#include <glib.h>
+
 class SDL2TestApplicationMixer : public SDL2TestApplication {
     public:
         SDL2TestApplicationMixer();
@@ -44,12 +47,60 @@ class SDL2TestApplicationMixer : public SDL2TestApplication {
 
     private:
         Mix_Chunk *sample;
+        audioresource_t *audio_resource;
+
+    public:
+        bool mix_opened;
 };
+
+
+void
+on_audio_resource_acquired(audioresource_t *audio_resource, bool acquired, void *user_data)
+{
+    /**
+     * This function will be called from libaudioresource every time the
+     * acquired status of a given audio resource changes. In particular, it
+     * will be called with acquired=true when the application can start playing
+     * audio, and will be called with acquired=false when the application must
+     * stop playing audio (for example, when a higher priority audio stream such
+     * as a different media player or phone call comes in).
+     **/
+
+    SDL2TestApplicationMixer *app = static_cast<SDL2TestApplicationMixer *>(user_data);
+
+    if (acquired && !app->mix_opened) {
+        fprintf(stderr, "Audio resource acquired.\n");
+        int result = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
+        if (result == -1) {
+            printf("Mix_OpenAudio: %s\n", Mix_GetError());
+            exit(1);
+        }
+
+        // Remember that we have opened the mixer, so we don't open it two times
+        app->mix_opened = true;
+    } else if (!acquired && app->mix_opened) {
+        fprintf(stderr, "Audio resource lost.\n");
+        // Must stop playing back audio here, otherwise writes to the audio device
+        // will block. As long as we have requested the resource, the callback will
+        // be called again once the audio resource is again ready for our use (e.g.
+        // when the higher-priority audio has finished).
+        Mix_CloseAudio();
+        app->mix_opened = false;
+    }
+}
+
 
 SDL2TestApplicationMixer::SDL2TestApplicationMixer()
     : SDL2TestApplication(1, 1)
     , sample(NULL)
+    , audio_resource(NULL)
+    , mix_opened(false)
 {
+    // Here, we declare a new audio resource that we want to later acquire - this is
+    // a game, and every time the acquired value changes, on_audio_resource_acquired
+    // will be called with "this" as user_data pointer.
+    audio_resource = audioresource_init(AUDIO_RESOURCE_GAME,
+            on_audio_resource_acquired, this);
 }
 
 void
@@ -67,10 +118,15 @@ SDL2TestApplicationMixer::initGL()
 
     Mix_AllocateChannels(16);
 
-    result = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 128);
-    if (result == -1) {
-        printf("Mix_OpenAudio: %s\n", Mix_GetError());
-        exit(1);
+    /* Acquire audio resource */
+    audioresource_acquire(audio_resource);
+
+    // Wait for the audio resource to be acquired; we need to run a GLib
+    // mainloop iteration here, as this is what libaudioresource uses to
+    // communicate with the resource framework.
+    while (!mix_opened) {
+        fprintf(stderr, "Waiting for audio resource to be acquired...\n");
+        g_main_context_iteration(NULL, true);
     }
 
     sample = Mix_LoadWAV(DATADIR "95328__ramas26__c.ogg");
@@ -96,6 +152,12 @@ void
 SDL2TestApplicationMixer::renderGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    // Feed the glib main loop; this will make sure that any changes in the
+    // resource policy (e.g. higher-priority audio makes us lose our
+    // already-acquired audio resource) are handled, and audio is stoppped
+    // in this case (and also later restarted)
+    g_main_context_iteration(NULL, false);
 }
 
 int
