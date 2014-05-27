@@ -1,7 +1,7 @@
 
 PACKAGE := sdl2-opengles-test
 
-TARGETS := sdl2_opengles1_test sdl2_opengles2_test sdl2_image_test sdl2_ttf_test sdl2_mixer_test
+TARGETS := sdl2_opengles1_test sdl2_opengles2_test sdl2_image_test sdl2_ttf_test sdl2_mixer_test sdl2_joystick_test
 DESKTOPS := $(patsubst %,%.desktop,$(TARGETS))
 DATA_FILES := $(wildcard images/* fonts/* sounds/*)
 
@@ -25,6 +25,9 @@ sdl2_image_test: main_image.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm SDL2_image)
 
 sdl2_ttf_test: main_ttf.cpp common.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm SDL2_ttf)
+
+sdl2_joystick_test: main_joystick.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm SDL2_ttf)
 
 sdl2_mixer_test: main_mixer.cpp common.cpp
