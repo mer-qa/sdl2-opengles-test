@@ -40,6 +40,9 @@ sdl2_gles1_procaddr_test: main_gles1_procaddr.cpp common.cpp
 sdl2_gles2_procaddr_test: main_gles2_procaddr.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv2 egl) -ldl
 
+sdl2_renderer_test: main_renderer.cpp common.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2)
+
 install: $(TARGETS) $(DESKTOPS)
 	install -d $(DESTDIR)$(PREFIX)/bin/
 	install -d $(DESTDIR)$(PREFIX)/share/applications/

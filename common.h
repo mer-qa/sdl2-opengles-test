@@ -60,7 +60,7 @@ class SDL2TestApplication {
 
         void for_each_touch(touch_point_func f, void *user_data);
 
-    private:
+    protected:
         int m_major;
         int m_minor;
         SDL_Window *m_window;

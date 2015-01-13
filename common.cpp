@@ -88,8 +88,10 @@ SDL2TestApplication::run()
     printf("Window size after fullscreen on: (%d, %d)\n", w, h);
 #endif
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, m_major);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, m_minor);
+    if (m_major != 0 && m_minor != 0) {
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, m_major);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, m_minor);
+    }
 
     m_gl_context = SDL_GL_CreateContext(m_window);
 
