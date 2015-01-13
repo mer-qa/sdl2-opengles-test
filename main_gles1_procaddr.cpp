@@ -48,7 +48,7 @@ SDL2TestApplicationGLESv1ProcAddr::SDL2TestApplicationGLESv1ProcAddr()
 void
 SDL2TestApplicationGLESv1ProcAddr::initGL()
 {
-    testProcAddr("libGLESv1.so");
+    testProcAddr("libGLESv1_CM.so");
 }
 
 void
