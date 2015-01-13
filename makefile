@@ -1,7 +1,8 @@
 
 PACKAGE := sdl2-opengles-test
 
-TARGETS := sdl2_opengles1_test sdl2_opengles2_test sdl2_image_test sdl2_ttf_test sdl2_mixer_test sdl2_joystick_test
+SOURCES := $(wildcard main_*.cpp)
+TARGETS := $(patsubst main_%.cpp,sdl2_%_test,$(SOURCES))
 DESKTOPS := $(patsubst %,%.desktop,$(TARGETS))
 DATA_FILES := $(wildcard images/* fonts/* sounds/*)
 
@@ -15,10 +16,10 @@ CXXFLAGS += -DDATADIR=\"$(DATADIR)\"
 
 all: $(TARGETS)
 
-sdl2_opengles1_test: main_glesv1.cpp common.cpp
+sdl2_opengles1_test: main_opengles1.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm)
 
-sdl2_opengles2_test: main_glesv2.cpp common.cpp
+sdl2_opengles2_test: main_opengles2.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv2)
 
 sdl2_image_test: main_image.cpp common.cpp
@@ -32,6 +33,12 @@ sdl2_joystick_test: main_joystick.cpp common.cpp
 
 sdl2_mixer_test: main_mixer.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm SDL2_mixer audioresource glib-2.0)
+
+sdl2_gles1_procaddr_test: main_gles1_procaddr.cpp common.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm egl) -ldl
+
+sdl2_gles2_procaddr_test: main_gles2_procaddr.cpp common.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv2 egl) -ldl
 
 install: $(TARGETS) $(DESKTOPS)
 	install -d $(DESTDIR)$(PREFIX)/bin/
