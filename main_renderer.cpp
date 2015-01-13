@@ -26,11 +26,7 @@
  **/
 
 
-#include <GLES/gl.h>
-
 #include "common.h"
-
-#include <SDL_image.h>
 
 class SDL2TestApplicationRenderer : public SDL2TestApplication {
     public:
