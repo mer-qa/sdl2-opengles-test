@@ -34,6 +34,12 @@ sdl2_joystick_test: main_joystick.cpp common.cpp
 sdl2_mixer_test: main_mixer.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm SDL2_mixer audioresource glib-2.0)
 
+sdl2_gles1_procaddr_test: main_gles1_procaddr.cpp common.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm egl) -ldl
+
+sdl2_gles2_procaddr_test: main_gles2_procaddr.cpp common.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv2 egl) -ldl
+
 install: $(TARGETS) $(DESKTOPS)
 	install -d $(DESTDIR)$(PREFIX)/bin/
 	install -d $(DESTDIR)$(PREFIX)/share/applications/
