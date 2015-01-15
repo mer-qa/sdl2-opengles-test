@@ -2,8 +2,8 @@
  *
  * SDL 2.0 OpenGL ES Test Application
  *
- * Copyright (C) 2013 Jolla Ltd.
- * Contact: Thomas Perl <thomas.perl@jollamobile.com>
+ * Copyright (C) 2013, 2015 Jolla Ltd.
+ * Contact: Thomas Perl <thomas.perl@jolla.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,46 +26,45 @@
  **/
 
 
-#ifndef SAILFISH_SDL_WAYLAND_OPENGL_TEST_H
-#define SAILFISH_SDL_WAYLAND_OPENGL_TEST_H
+#include <GLES2/gl2.h>
+#include "procaddr_helper.h"
 
-#include <SDL.h>
-#include <stdio.h>
+#include "common.h"
 
-#include <list>
-
-class TouchPoint {
+class SDL2TestApplicationGLESv2ProcAddr : public SDL2TestApplication {
     public:
-        TouchPoint(int id, float x, float y) : id(id), x(x), y(y) {}
+        SDL2TestApplicationGLESv2ProcAddr();
 
-        int id;
-        float x;
-        float y;
+        virtual void initGL();
+        virtual void resizeGL(int width, int height);
+        virtual void renderGL();
 };
 
-typedef void (*touch_point_func)(TouchPoint *touch, void *user_data);
+SDL2TestApplicationGLESv2ProcAddr::SDL2TestApplicationGLESv2ProcAddr()
+    : SDL2TestApplication(2, 0)
+{
+}
 
-class SDL2TestApplication {
-    public:
-        SDL2TestApplication(int major, int minor);
-        ~SDL2TestApplication();
+void
+SDL2TestApplicationGLESv2ProcAddr::initGL()
+{
+    testProcAddr("libGLESv2.so");
+}
 
-        int run();
+void
+SDL2TestApplicationGLESv2ProcAddr::resizeGL(int width, int height)
+{
+}
 
-        virtual void initGL() = 0;
-        virtual void resizeGL(int width, int height) = 0;
-        virtual void renderGL() = 0;
+void
+SDL2TestApplicationGLESv2ProcAddr::renderGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+}
 
-        virtual void onPressed(TouchPoint *touch) {}
-
-        void for_each_touch(touch_point_func f, void *user_data);
-
-    protected:
-        int m_major;
-        int m_minor;
-        SDL_Window *m_window;
-        SDL_GLContext m_gl_context;
-        std::list<TouchPoint*> m_touches;
-};
-
-#endif /* SAILFISH_SDL_WAYLAND_OPENGL_TEST_H */
+int
+main(int argc, char *argv[])
+{
+    SDL2TestApplicationGLESv2ProcAddr testapp_glesv1_procaddr;
+    return testapp_glesv1_procaddr.run();
+}

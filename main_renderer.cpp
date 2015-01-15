@@ -1,6 +1,6 @@
 /**
  *
- * SDL 2.0 OpenGL ES Test Application
+ * SDL 2.0 Image Test Application
  *
  * Copyright (C) 2013 Jolla Ltd.
  * Contact: Thomas Perl <thomas.perl@jollamobile.com>
@@ -26,46 +26,57 @@
  **/
 
 
-#ifndef SAILFISH_SDL_WAYLAND_OPENGL_TEST_H
-#define SAILFISH_SDL_WAYLAND_OPENGL_TEST_H
+#include "common.h"
 
-#include <SDL.h>
-#include <stdio.h>
-
-#include <list>
-
-class TouchPoint {
+class SDL2TestApplicationRenderer : public SDL2TestApplication {
     public:
-        TouchPoint(int id, float x, float y) : id(id), x(x), y(y) {}
+        SDL2TestApplicationRenderer();
 
-        int id;
-        float x;
-        float y;
+        virtual void initGL();
+        virtual void resizeGL(int width, int height);
+        virtual void renderGL();
+
+    private:
+        SDL_Renderer *m_renderer;
 };
 
-typedef void (*touch_point_func)(TouchPoint *touch, void *user_data);
+SDL2TestApplicationRenderer::SDL2TestApplicationRenderer()
+    : SDL2TestApplication(0, 0)
+    , m_renderer(NULL)
+{
+}
 
-class SDL2TestApplication {
-    public:
-        SDL2TestApplication(int major, int minor);
-        ~SDL2TestApplication();
+void
+SDL2TestApplicationRenderer::initGL()
+{
+    m_renderer = SDL_CreateRenderer(m_window, -1,
+            SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 
-        int run();
+    SDL_RendererInfo sri;
+    if (SDL_GetRendererInfo(m_renderer, &sri) == 0) {
+        printf("Renderer backend: %s\n", sri.name);
+    } else {
+        printf("Could not get renderer info\n");
+    }
+}
 
-        virtual void initGL() = 0;
-        virtual void resizeGL(int width, int height) = 0;
-        virtual void renderGL() = 0;
+void
+SDL2TestApplicationRenderer::resizeGL(int width, int height)
+{
+}
 
-        virtual void onPressed(TouchPoint *touch) {}
+void
+SDL2TestApplicationRenderer::renderGL()
+{
+    SDL_SetRenderDrawColor(m_renderer, 128, 64, 32, 255);
+    SDL_RenderClear(m_renderer);
+    SDL_RenderPresent(m_renderer);
+}
 
-        void for_each_touch(touch_point_func f, void *user_data);
+int
+main(int argc, char *argv[])
+{
+    SDL2TestApplicationRenderer testapp_image;
+    return testapp_image.run();
+}
 
-    protected:
-        int m_major;
-        int m_minor;
-        SDL_Window *m_window;
-        SDL_GLContext m_gl_context;
-        std::list<TouchPoint*> m_touches;
-};
-
-#endif /* SAILFISH_SDL_WAYLAND_OPENGL_TEST_H */

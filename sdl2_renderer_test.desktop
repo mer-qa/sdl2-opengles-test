@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=SDL2 Renderer
+Icon=icon-launcher-component-gallery
+Exec=/usr/bin/sdl2_renderer_test

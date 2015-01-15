@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=SDL2gles2PA
+Icon=icon-launcher-component-gallery
+Exec=/usr/bin/sdl2_gles2_procaddr_test
