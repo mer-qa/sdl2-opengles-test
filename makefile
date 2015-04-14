@@ -43,6 +43,9 @@ sdl2_gles2_procaddr_test: main_gles2_procaddr.cpp common.cpp
 sdl2_renderer_test: main_renderer.cpp common.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2)
 
+sdl2_orientation_test: main_orientation.cpp common.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(shell pkg-config --libs --cflags sdl2 glesv1_cm SDL2_ttf)
+
 install: $(TARGETS) $(DESKTOPS)
 	install -d $(DESTDIR)$(PREFIX)/bin/
 	install -d $(DESTDIR)$(PREFIX)/share/applications/
