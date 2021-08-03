@@ -3,7 +3,6 @@
  * SDL 2.0 Joystick Test Application
  *
  * Copyright (C) 2014 Jolla Ltd.
- * Contact: Thomas Perl <thomas.perl@jolla.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
