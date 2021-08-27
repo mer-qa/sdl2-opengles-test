@@ -4,7 +4,6 @@
  * SDL 2.0 OpenGL ES Test Application
  *
  * Copyright (C) 2015 Jolla Ltd.
- * Contact: Thomas Perl <thomas.perl@jolla.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

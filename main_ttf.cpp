@@ -3,7 +3,6 @@
  * SDL 2.0 TTF Test Application
  *
  * Copyright (C) 2013 Jolla Ltd.
- * Contact: Thomas Perl <thomas.perl@jollamobile.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

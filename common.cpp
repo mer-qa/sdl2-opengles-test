@@ -2,8 +2,7 @@
  *
  * SDL 2.0 OpenGL ES Test Application
  *
- * Copyright (C) 2013 Jolla Ltd.
- * Contact: Thomas Perl <thomas.perl@jollamobile.com>
+ * Copyright (C) 2013-2021 Jolla Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -115,7 +114,11 @@ SDL2TestApplication::run()
                     break;
                 case SDL_FINGERDOWN:
                     touch = new TouchPoint(event.tfinger.fingerId,
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+                            event.tfinger.x * w, event.tfinger.y * h);
+#else
                             event.tfinger.x, event.tfinger.y);
+#endif
                     m_touches.push_back(touch);
                     onPressed(touch);
                     printf("Finger down: (%.2f, %.2f)\n", touch->x, touch->y);
@@ -126,8 +129,13 @@ SDL2TestApplication::run()
                         touch = *it;
                         if (touch->id == event.tfinger.fingerId) {
                             if (event.type == SDL_FINGERMOTION) {
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+                                touch->x = event.tfinger.x * w;
+                                touch->y = event.tfinger.y * h;
+#else
                                 touch->x = event.tfinger.x;
                                 touch->y = event.tfinger.y;
+#endif
                                 printf("finger move: (%.2f, %.2f)\n", touch->x, touch->y);
                             } else {
                                 printf("Finger up: (%.2f, %.2f)\n", touch->x, touch->y);
