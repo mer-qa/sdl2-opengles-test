@@ -108,6 +108,10 @@ SDL2TestApplication::run()
                 case SDL_QUIT:
                     quit = 1;
                     break;
+                case SDL_DISPLAYEVENT:
+                    printf("Display: %u event: %d (%d)\n", event.display.display,
+                            event.window.event, event.display.data1);
+                    break;
                 case SDL_WINDOWEVENT:
                     printf("Window event: %d (%d, %d)\n", event.window.event,
                             event.window.data1, event.window.data2);
