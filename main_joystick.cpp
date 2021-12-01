@@ -127,7 +127,7 @@ SDL2TestApplicationJoystick::initGL()
     glGenTextures(1, &texture);
 
     int size = 30;
-    font = TTF_OpenFont(DATADIR "SourceSansPro-Regular.ttf", size);
+    font = TTF_OpenFont(DATADIR_JOYSTICK "SourceSansPro-Regular.ttf", size);
 
     // Initialize the joystick subsystem
     SDL_InitSubSystem(SDL_INIT_JOYSTICK);

@@ -141,8 +141,8 @@ SDL2TestApplicationImage::initGL()
         return;
     }
 
-    texture_from_png = textureFromImage(DATADIR "SDL_logo.png", TextureImage::RGBA);
-    texture_from_jpg = textureFromImage(DATADIR "sailfish-site-bg_small.jpg", TextureImage::RGB);
+    texture_from_png = textureFromImage(DATADIR_IMAGE "SDL_logo.png", TextureImage::RGBA);
+    texture_from_jpg = textureFromImage(DATADIR_IMAGE "sailfish-site-bg_small.jpg", TextureImage::RGB);
 }
 
 void
