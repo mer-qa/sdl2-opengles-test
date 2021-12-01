@@ -193,9 +193,9 @@ SDL2TestApplicationImage::renderGL()
     glBindTexture(GL_TEXTURE_2D, texture_from_jpg);
     float vtxcoords[] = {
         0, 0,
-        width, 0,
-        0, height,
-        width, height,
+        (float)width, 0,
+        0, (float)height,
+        (float)width, (float)height,
     };
     float texcoords[] = { 0, 0, 1, 0, 0, 1, 1, 1 };
 
