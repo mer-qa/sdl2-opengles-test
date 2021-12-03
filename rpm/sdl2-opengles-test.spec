@@ -32,4 +32,4 @@ using SDL 2.0 under Wayland. Also tested: multi-touch input.
 %defattr(-,root,root,-)
 %{_bindir}/*
 %{_datadir}/applications/*.desktop
-%{_datadir}/%(name)/*
+%{_datadir}/sdl2_*_test

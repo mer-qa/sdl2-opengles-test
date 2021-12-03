@@ -122,7 +122,7 @@ SDL2TestApplicationTTF::initGL()
     glGenTextures(1, &texture);
 
     int size = 30;
-    font = TTF_OpenFont(DATADIR "SourceSansPro-Regular.ttf", size);
+    font = TTF_OpenFont(DATADIR_TTF "SourceSansPro-Regular.ttf", size);
 }
 
 void

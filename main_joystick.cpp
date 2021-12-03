@@ -127,7 +127,7 @@ SDL2TestApplicationJoystick::initGL()
     glGenTextures(1, &texture);
 
     int size = 30;
-    font = TTF_OpenFont(DATADIR "SourceSansPro-Regular.ttf", size);
+    font = TTF_OpenFont(DATADIR_JOYSTICK "SourceSansPro-Regular.ttf", size);
 
     // Initialize the joystick subsystem
     SDL_InitSubSystem(SDL_INIT_JOYSTICK);
@@ -163,7 +163,10 @@ SDL2TestApplicationJoystick::renderText(float x, float y, const char *fmt, ...)
     va_start(args, fmt);
 
     char *text;
-    vasprintf(&text, fmt, args);
+    if (vasprintf(&text, fmt, args) < 0) {
+        return 0;
+    }
+
     ttf_render_text(font, &textsize, text);
     free(text);
 
@@ -237,7 +240,7 @@ SDL2TestApplicationJoystick::renderGL()
 
         TEXTOUT("---");
         for (int i=0; i<SDL_JoystickNumHats(joy); i++) {
-            char *hatState = "<unknown>";
+            const char *hatState;
 
 #define CASE_HAT_STATE(x) case x: hatState = #x; break
 
@@ -251,6 +254,9 @@ SDL2TestApplicationJoystick::renderGL()
                 CASE_HAT_STATE(SDL_HAT_RIGHTDOWN);
                 CASE_HAT_STATE(SDL_HAT_LEFTUP);
                 CASE_HAT_STATE(SDL_HAT_LEFTDOWN);
+                default:
+                    hatState = "<unknown>";
+                    break;
             }
 
 #undef CASE_HAT_STATE

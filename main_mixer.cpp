@@ -128,7 +128,7 @@ SDL2TestApplicationMixer::initGL()
         g_main_context_iteration(NULL, true);
     }
 
-    sample = Mix_LoadWAV(DATADIR "95328__ramas26__c.ogg");
+    sample = Mix_LoadWAV(DATADIR_MIXER "95328__ramas26__c.ogg");
     if (sample == NULL) {
         printf("Mix_LoadWAV: %s\n", Mix_GetError());
         exit(1);

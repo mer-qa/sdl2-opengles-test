@@ -4,15 +4,21 @@ PACKAGE := sdl2-opengles-test
 SOURCES := $(wildcard main_*.cpp)
 TARGETS := $(patsubst main_%.cpp,sdl2_%_test,$(SOURCES))
 DESKTOPS := $(patsubst %,%.desktop,$(TARGETS))
-DATA_FILES := $(wildcard images/* fonts/* sounds/*)
 
 DESTDIR ?=
 PREFIX ?= /usr
 
-DATADIR := $(PREFIX)/share/$(PACKAGE)/
+BASEDATADIR := $(PREFIX)/share/
+DATADIR_IMAGE := $(BASEDATADIR)/sdl2_image_test/
+DATADIR_JOYSTICK := $(BASEDATADIR)/sdl2_joystick_test/
+DATADIR_MIXER := $(BASEDATADIR)/sdl2_mixer_test/
+DATADIR_TTF := $(BASEDATADIR)/sdl2_ttf_test/
 
 CXXFLAGS ?= -g
-CXXFLAGS += -DDATADIR=\"$(DATADIR)\"
+CXXFLAGS += -DDATADIR_IMAGE=\"$(DATADIR_IMAGE)\"\
+            -DDATADIR_JOYSTICK=\"$(DATADIR_JOYSTICK)\"\
+            -DDATADIR_MIXER=\"$(DATADIR_MIXER)\"\
+            -DDATADIR_TTF=\"$(DATADIR_TTF)\"
 
 all: $(TARGETS)
 
@@ -46,10 +52,16 @@ sdl2_renderer_test: main_renderer.cpp common.cpp
 install: $(TARGETS) $(DESKTOPS)
 	install -d $(DESTDIR)$(PREFIX)/bin/
 	install -d $(DESTDIR)$(PREFIX)/share/applications/
-	install -d $(DESTDIR)$(DATADIR)
+	install -d $(DESTDIR)$(DATADIR_IMAGE)
+	install -d $(DESTDIR)$(DATADIR_JOYSTICK)
+	install -d $(DESTDIR)$(DATADIR_MIXER)
+	install -d $(DESTDIR)$(DATADIR_TTF)
 	install -m755 $(TARGETS) $(DESTDIR)$(PREFIX)/bin/
 	install -m644 $(DESKTOPS) $(DESTDIR)$(PREFIX)/share/applications/
-	install -m644 $(DATA_FILES) $(DESTDIR)$(DATADIR)
+	install -m644 images/* $(DESTDIR)$(DATADIR_IMAGE)
+	install -m644 fonts/* $(DESTDIR)$(DATADIR_JOYSTICK)
+	install -m644 sounds/* $(DESTDIR)$(DATADIR_MIXER)
+	install -m644 fonts/* $(DESTDIR)$(DATADIR_TTF)
 
 clean:
 	rm -f $(TARGETS)
