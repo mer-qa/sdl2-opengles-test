@@ -142,6 +142,7 @@ SDL2TestApplication::run()
 #endif
                                 printf("finger move: (%.2f, %.2f)\n", touch->x, touch->y);
                             } else {
+                                onReleased(touch);
                                 printf("Finger up: (%.2f, %.2f)\n", touch->x, touch->y);
                                 m_touches.erase(it);
                             }

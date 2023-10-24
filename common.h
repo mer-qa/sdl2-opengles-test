@@ -56,6 +56,7 @@ class SDL2TestApplication {
         virtual void renderGL() = 0;
 
         virtual void onPressed(TouchPoint *touch) {}
+        virtual void onReleased(TouchPoint *touch) {}
 
         void for_each_touch(touch_point_func f, void *user_data);
 
